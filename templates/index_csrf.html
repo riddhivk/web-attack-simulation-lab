@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Vulnerable Demo App</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            padding: 30px;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        .card {
+            background: #1e293b;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+        .danger { color: red; }
+        .safe { color: lightgreen; }
+    </style>
+</head>
+
+<body>
+
+<h2>📝 Vulnerable Comment Board</h2>
+
+<p>Status:
+{% if vulnerable %}
+<span class="danger">VULNERABLE MODE</span>
+{% else %}
+<span class="safe">SAFE MODE</span>
+{% endif %}
+</p>
+
+<form method="POST">
+    <input name="user" placeholder="Username">
+    <input name="comment" placeholder="Write comment">
+    <button type="submit">Post</button>
+</form>
+
+<hr>
+
+<h3>Comments</h3>
+
+{% for c in comments %}
+<div class="card">
+<b>{{c.user}}</b> :
+{% if vulnerable %}
+{{ c.text | safe }}
+{% else %}
+{{ c.text }}
+{% endif %}
+</div>
+{% endfor %}
+
+</body>
+</html>
+<hr>
+
+<h3>💰 Bank Account</h3>
+<p>Balance: {{balance}}</p>
+
+<form action="/transfer" method="POST">
+    <input type="number" name="amount" placeholder="Amount">
+    <button type="submit">Transfer</button>
+</form>
